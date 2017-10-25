@@ -41,7 +41,7 @@ print "Rotation Vector:\n {0}".format(rotation_vector)
 print "Translation Vector:\n {0}".format(translation_vector)
 print "Rotation Matrix: \n {0}".format(rot_mat)
 
-print "saved rotation matrix and translation matrix text files \n "
+print "saved world_points, rotation matrix and translation matrix text files \n "
 
 np.savetxt(os.path.join(args.output_dir, "rotation_matrix.txt"), rot_mat, fmt='%3.8f', delimiter=' ', newline='\n')
 np.savetxt(os.path.join(args.output_dir, "world_points.txt"), rot_mat, fmt='%3.8f', delimiter=' ', newline='\n')
