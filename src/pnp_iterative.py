@@ -14,12 +14,18 @@ print 'Using OpenCV ver.',cv2.__version__
 # 2D image points from the left camera image
 image_points = np.loadtxt(os.path.join(args.input_dir, "image_points.txt"), dtype=float)
 
-# Corresponding 3D world points from the laser scan
-world_points = np.loadtxt(os.path.join(args.input_dir, "world_points.txt"), dtype=float)
+# Corresponding 3D raw world points from the laser scan
+world_points_raw = np.loadtxt(os.path.join(args.input_dir, "world_points_raw.txt"), dtype=float)
 
-# load camera matrix formatted as 
+# loading the origin
+origin = np.loadtxt(os.path.join(args.input_dir, "origin.txt"), dtype=float)
+
+# the z axis in world points currently contains the absolute elevation ~ 195 m - it needs to be shifted based on the origin 
+world_points = world_points_raw - origin
+
+# load camera matrix defined as: 
 # [fx 0 cx; 0 fy cy; 0 0 1] 
-camera_matrix = np.loadtxt("./camera_matrix.txt", dtype=float)
+camera_matrix = np.loadtxt(os.path.join(args.input_dir, "camera_matrix.txt"), dtype=float)
  
 dist_coeffs = np.zeros((4,1)) # Assuming no lens distortion - the image points were obtained from a rectified image
 
@@ -38,4 +44,5 @@ print "Rotation Matrix: \n {0}".format(rot_mat)
 print "saved rotation matrix and translation matrix text files \n "
 
 np.savetxt(os.path.join(args.output_dir, "rotation_matrix.txt"), rot_mat, fmt='%3.8f', delimiter=' ', newline='\n')
+np.savetxt(os.path.join(args.output_dir, "world_points.txt"), rot_mat, fmt='%3.8f', delimiter=' ', newline='\n')
 np.savetxt(os.path.join(args.output_dir, "translation_matrix.txt"), translation_vector, fmt='%3.8f', delimiter=' ')
